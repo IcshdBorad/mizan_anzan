@@ -1,0 +1,46 @@
+MIZAN ANZAN — FINAL RELEASE NOTES
+==================================
+Date: 2026-08-10
+
+This package is based on the latest uploaded working baseline:
+mizan_anzan.zip
+
+Confirmed production boot chain:
+- assets/js/i18n.js
+- assets/js/anzan_soroban_engine_v3.js
+- assets/js/app.js
+
+Main corrections in this release:
+1. Student registration is server-backed and creates a real ANZ student identity.
+2. Student code is linked to anzan_profiles and anzan_results.
+3. Browser refresh restores the PHP student session.
+4. Challenge completion saves the result to anzan_results.
+5. Student history is a real database-backed list.
+6. Every saved result has a real report link.
+7. Leaderboard no longer uses mock data; it reads real database results.
+8. Leaderboard entries are tied to the real student code.
+9. The existing centralized includes/db.php remains the database authority.
+10. The official ICSHD watermark is now loaded from the actual existing PNG and enlarged as a low-contrast background layer.
+11. Arabic / English / French navigation includes the new training-history entry.
+12. Soroban engine and non-negative-state rule were not changed.
+
+Static validation:
+- All PHP files: syntax PASS
+- Production JavaScript: syntax PASS
+- Production engine: syntax PASS
+- Duplicate HTML IDs: none found
+- Production script order: preserved
+- Watermark asset: exists and is RGBA/transparent
+
+Required live-host validation before public launch:
+- Execute database migrations 001_anzan_id.sql and 002_anzan_results.sql if not already executed.
+- Register one fresh test student.
+- Run one short challenge.
+- Verify the result row appears in anzan_results.
+- Verify student_history.php lists it.
+- Verify generate_report.php?id=... opens it.
+- Verify leaderboard shows the real code.
+- Test Arabic / English / French.
+- Test desktop / tablet / mobile.
+
+Do not add legacy JavaScript files to index.html.

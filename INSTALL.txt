@@ -1,0 +1,21 @@
+MIZAN ANZAN FINAL AUDIO-SYNC PACKAGE
+
+Files included:
+- assets/js/app.js
+- assets/js/i18n.js
+- assets/css/style.css
+- generate_report.php
+- assets/audio/countdown/ar/README.txt
+
+Arabic countdown behavior:
+- 3 / 2 / 1 / Start remain visually numeric as 3 / 2 / 1, then localized Start.
+- Arabic attempts bundled local recordings first, avoiding device Arabic TTS dependency.
+- English and French retain browser speech synthesis.
+
+IMPORTANT:
+The requested human female/maternal Arabic recordings are not included because
+no actual recordings were supplied and this environment cannot truthfully create
+a human voice recording. Add the four MP3 files named in the README to:
+assets/audio/countdown/ar/
+
+Do not add silent placeholder files; the app will otherwise consider them audio.

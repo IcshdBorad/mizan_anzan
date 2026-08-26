@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+>
+
+<title>
+اختبار محرك ميزان أنزان
+</title>
+
+
+<style>
+
+body {
+
+    font-family: Arial, sans-serif;
+
+    background: #f5f7fb;
+
+    padding: 24px;
+
+}
+
+
+.box {
+
+    max-width: 1000px;
+
+    margin: auto;
+
+    background: #fff;
+
+    padding: 24px;
+
+    border-radius: 14px;
+
+}
+
+
+pre {
+
+    background: #111;
+
+    color: #eee;
+
+    padding: 16px;
+
+    border-radius: 10px;
+
+    white-space: pre-wrap;
+
+}
+
+
+.ok {
+
+    color: #087a3d;
+
+    font-weight: 700;
+
+}
+
+
+.bad {
+
+    color: #b42318;
+
+    font-weight: 700;
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="box">
+
+<h1>
+🧪 اختبار محرك سوروبان — ميزان أنزان
+</h1>
+
+
+<div id="out"></div>
+
+</div>
+
+
+
+<script
+src="/mizan_anzan/assets/js/anzan_soroban_engine_v1.js">
+</script>
+
+
+
+<script>
+
+(function () {
+
+
+    const out =
+        document.getElementById(
+            'out'
+        );
+
+
+    let passed =
+        0;
+
+
+    let failed =
+        0;
+
+
+    const rows =
+        [];
+
+
+    function test(
+        name,
+        fn
+    ) {
+
+
+        try {
+
+
+            if (
+                fn()
+            ) {
+
+                passed++;
+
+                rows.push(
+                    '✅ ' +
+                    name
+                );
+
+            }
+
+            else {
+
+                failed++;
+
+                rows.push(
+                    '❌ ' +
+                    name
+                );
+
+            }
+
+
+        }
+
+        catch (
+            e
+        ) {
+
+            failed++;
+
+            rows.push(
+                '❌ ' +
+                name +
+                ' — ' +
+                e.message
+            );
+
+        }
+
+    }
+
+
+
+    const E =
+        window.MizanAnzanSoroban;
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Exhaustive one-rod checks
+    |--------------------------------------------------------------------------
+    */
+
+    for (
+        let d = 0;
+        d <= 9;
+        d++
+    ) {
+
+
+        for (
+            let x = 1;
+            x <= 9;
+            x++
+        ) {
+
+
+            test(
+                `إضافة ${d}+${x} قابلة للتقييم`,
+                () => {
+
+
+                    const r =
+                        E.validateOperation(
+                            d,
+                            x,
+                            {
+
+                                digits: 1,
+
+                                rows: 2,
+
+                                operation:
+                                    'addition',
+
+                                level:
+                                    'mix',
+
+                                allowNegative:
+                                    false,
+
+                                maxGenerationAttempts:
+                                    10,
+
+                                candidatesPerRow:
+                                    10
+
+                            }
+                        );
+
+
+                    return (
+                        r.valid === true ||
+                        r.reason ===
+                            'soroban_transition_invalid'
+                    );
+
+                }
+            );
+
+
+
+            test(
+                `طرح ${d}-${x} لا يسمح بنتيجة سالبة`,
+                () => {
+
+
+                    const r =
+                        E.validateOperation(
+                            d,
+                            -x,
+                            {
+
+                                digits: 1,
+
+                                rows: 2,
+
+                                operation:
+                                    'subtraction',
+
+                                level:
+                                    'mix',
+
+                                allowNegative:
+                                    false,
+
+                                maxGenerationAttempts:
+                                    10,
+
+                                candidatesPerRow:
+                                    10
+
+                            }
+                        );
+
+
+                    return (
+                        d - x < 0
+                            ? r.valid === false
+                            : true
+                    );
+
+                }
+            );
+
+        }
+
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Negative protection
+    |--------------------------------------------------------------------------
+    */
+
+    test(
+        'لا يقبل السالب افتراضيًا',
+        () => {
+
+
+            const r =
+                E.validateOperation(
+                    13,
+                    -20,
+                    {
+
+                        digits: 2,
+
+                        rows: 2,
+
+                        operation:
+                            'subtraction',
+
+                        level:
+                            'mix',
+
+                        allowNegative:
+                            false,
+
+                        maxGenerationAttempts:
+                            10,
+
+                        candidatesPerRow:
+                            10
+
+                    }
+                );
+
+
+            return (
+                r.valid === false
+            );
+
+        }
+    );
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Simple
+    |--------------------------------------------------------------------------
+    */
+
+    test(
+        'التوليد البسيط لا يخرج عن direct',
+        () => {
+
+
+            const s =
+                E.generateSequence(
+                    {
+
+                        digits: 2,
+
+                        rows: 4,
+
+                        operation:
+                            'addition',
+
+                        level:
+                            'simple',
+
+                        allowNegative:
+                            false,
+
+                        maxGenerationAttempts:
+                            100,
+
+                        candidatesPerRow:
+                            120
+
+                    }
+                );
+
+
+            return (
+                s.techniqueTrace
+                    .flat()
+                    .every(
+                        x =>
+                            x === 'direct'
+                    )
+            );
+
+        }
+    );
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | MIX
+    |--------------------------------------------------------------------------
+    */
+
+    test(
+        'MIX يحتوي 5 و10',
+        () => {
+
+
+            const s =
+                E.generateSequence(
+                    {
+
+                        digits: 2,
+
+                        rows: 12,
+
+                        operation:
+                            'mixed',
+
+                        level:
+                            'mix',
+
+                        allowNegative:
+                            false,
+
+                        maxGenerationAttempts:
+                            500,
+
+                        candidatesPerRow:
+                            120
+
+                    }
+                );
+
+
+            const flat =
+                s.techniqueTrace.flat();
+
+
+            return (
+
+                flat.some(
+                    x =>
+                        x === 'f5' ||
+                        x === 'mix'
+                )
+
+                &&
+
+                flat.some(
+                    x =>
+                        x === 'f10' ||
+                        x === 'mix'
+                )
+
+            );
+
+        }
+    );
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Output
+    |--------------------------------------------------------------------------
+    */
+
+    out.innerHTML =
+
+        `<p class="ok">
+            نجح: ${passed}
+        </p>` +
+
+        `<p class="${failed ? 'bad' : 'ok'}">
+            فشل: ${failed}
+        </p>` +
+
+        `<pre>
+${rows.join('\n')}
+        </pre>`;
+
+})();
+
+</script>
+
+
+</body>
+
+</html>

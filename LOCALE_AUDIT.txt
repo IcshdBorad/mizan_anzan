@@ -1,0 +1,18 @@
+MIZAN ANZAN — LANGUAGE SYSTEM AUDIT
+Date: 2026-08-14
+
+1. LANGUAGE MENU
+- Fixed to use viewport positioning instead of depending on RTL/LTR parent geometry.
+- Desktop/tablet: 2-column grid.
+- Small phones: 1-column grid.
+- Menu is clamped to viewport width and height.
+- Prevents left/right clipping and disappearing menu.
+- RTL/LTR changes page direction only; menu geometry is direction-independent.
+
+2. LANGUAGE FILES
+The project contains 54 external locale files in js/locales/ plus Arabic/English/French embedded in js/i18n.js.
+All 54 external locale files contain exactly the 236 Canonical English Master keys.
+Therefore the additional languages are ACTIVE for the translated 236-key canonical schema, but are NOT yet 100% translated for every portal/report/leaderboard/result string.
+Missing keys fall back to English by design so no UI key becomes blank.
+
+This audit is intentionally explicit: the package does not claim 100% translation coverage when the source files do not contain those translations.

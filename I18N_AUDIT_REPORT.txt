@@ -1,0 +1,24 @@
+MIZAN ANZAN — I18N COMPLETE 236-KEY RELEASE
+
+Architecture
+- Arabic, English and French are embedded in assets/js/i18n.js.
+- The remaining 54 languages are loaded from assets/js/locales/{lang}.js.
+- Arabic is the default first language.
+- Language order begins: Arabic, English, French, Tamazight, Kurdish Kurmanji, Kurdish Sorani, then the remaining languages.
+
+Canonical master
+- English is the Canonical English Master.
+- Embedded Arabic, English and French contain the same 236-key schema.
+- All 54 external locale files contain the same 236-key schema.
+
+Compatibility
+- Legacy keys fullname_label, fullname_ph and country_ph are preserved across the schema.
+- window.I18nLocales compatibility registry is preserved for embedded ar/en/fr and external locale files.
+
+Validation
+- 57 language locales checked.
+- 236 unique canonical keys per locale.
+- Duplicate locale keys removed/avoided.
+- zh-only report keys normalized out so the schema is identical.
+- External locale loading validates the canonical key set before activation.
+- English does not require an external locale request.

@@ -1,0 +1,86 @@
+MIZAN ANZAN — FINAL DEPLOYMENT / RECOVERY CONTRACT
+====================================================
+
+1) DATABASE CREDENTIALS — REQUIRED
+----------------------------------
+The public source no longer contains a database password.
+Create:
+    includes/db-config.php
+from:
+    includes/db-config.php.example
+
+Put the CURRENT MySQL password in MIZAN_DB_PASSWORD.
+Do NOT send the password in chat.
+
+The current code uses these defaults unless overridden:
+    host = localhost
+    database = u354720897_5EoZT
+    user = u354720897_FrwC8
+
+If hPanel shows a different database/user, change them in db-config.php.
+
+2) DATABASE SCHEMA
+------------------
+The registration endpoint can repair/create the small account schema needed for:
+    mizan_accounts
+    mizan_entities
+    mizan_branches
+    mizan_relationships
+
+For a clean production installation, run once:
+    database/migrations/001_anzan_id.sql
+    database/migrations/002_anzan_results.sql
+    database/migrations/004_mizan_identity_competition_foundation.sql
+    database/migrations/005_global_country_identity.sql
+    database/migrations/006_registration_schema_hardening.sql
+    database/migrations/007_mizan_final_schema_hardening.sql
+
+Migration 007 is intentionally compatible with installations where some earlier
+columns already exist. It does not DROP, DELETE or TRUNCATE application data.
+
+3) REGISTRATION ARCHITECTURE
+----------------------------
+Genius:
+    anzan_profiles.anz_id is the canonical identity.
+    genius_code is used when that column exists; otherwise anz_id is used safely.
+
+Coach / Parent / Institution:
+    mizan_accounts.access_code is the canonical access code.
+    Institution registration creates both the organization identity and its
+    authorized management account in one transaction.
+
+4) COUNTRY IDENTITY
+--------------------
+The browser never sends a free-form country as the identity.
+It sends an ISO 3166-1 alpha-2 country code selected from the official picker.
+The server validates the code and stores the canonical English country name,
+plus country_code when that column exists.
+
+5) LANGUAGE
+-----------
+The registration UI is initialized only AFTER the i18n manager finishes loading.
+The role-specific registration text now uses the canonical i18n system instead
+of a separate three-language dictionary. This prevents Arabic from silently
+falling back to English and prevents the old registration key literals from
+appearing in the interface.
+
+6) CACHE
+--------
+All production JS assets use the release cache key:
+    20260820-global-final-r1
+
+After deployment, hard-refresh once in the browser:
+    Ctrl + F5
+
+7) DIAGNOSTIC
+-------------
+Use only the registration health endpoint during verification:
+    api/registration-health.php
+
+It reports schema readiness without exposing database credentials.
+
+8) IMPORTANT SECURITY CLEANUP
+-----------------------------
+Do not upload any old db.php containing a real password.
+Delete any previously exposed database password from hPanel and create a new
+password before deployment.

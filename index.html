@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <!-- ===== VIEWPORT المحسّن ===== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#07111f">
+    <meta name="description" content="ميزان أنزان — منصة تدريب الأنزان والسوروبان">
+    <title data-i18n="brand_title">ميزان أنزان</title>
+
+    <!-- ===== FONTS & ICONS ===== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- ===== TAILWIND (مؤقت) ===== -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- ===== STYLE الخاص بك ===== -->
+    <link rel="stylesheet" href="/mizan_anzan/assets/css/style.css?v=20260820-global-final-r1">
+
+    <!-- ===== الأنماط الأساسية (الموجودة) ===== -->
+    <style>
+        html, body {
+            min-height: 100%;
+            background:
+                radial-gradient(circle at 90% 0%, rgba(212,175,55,.075), transparent 30%),
+                radial-gradient(circle at 8% 92%, rgba(31,78,121,.12), transparent 28%),
+                linear-gradient(135deg, #050b14, #07111f 45%, #0a1424) !important;
+            color: #f8fafc;
+        }
+        body.mizan-app-body { min-height: 100vh; min-height: 100dvh; overflow-x:hidden; }
+        .glass-card {
+            background: linear-gradient(145deg, rgba(13,23,42,.96), rgba(7,17,31,.94)) !important;
+            border: 1px solid rgba(212,175,55,.24);
+            box-shadow: 0 20px 60px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.03);
+            backdrop-filter: blur(14px);
+        }
+        .number-display { min-height:120px; display:flex; align-items:center; justify-content:center; text-shadow:0 0 25px rgba(244,211,94,.25); }
+    </style>
+
+    <!-- =============================================================
+         ★★★ كود التجاوب القسري (المدمج) ★★★
+         ============================================================= -->
+    <style>
+        /* ---------------------
+           إعادة ضبط إضافية لمنع التمرير الأفقي
+           --------------------- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box !important;
+        }
+
+        html, body {
+            width: 100% !important;
+            overflow-x: hidden !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* جعل كل العناصر المرنة تتجاوب */
+        .responsive-body {
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* الهيدر يتكيف */
+        .responsive-header {
+            flex-shrink: 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+        }
+        @media (max-width: 640px) {
+            .responsive-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .responsive-header > div:first-child {
+                justify-content: center;
+            }
+            .responsive-header > div:last-child {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+
+        /* المحتوى الرئيسي */
+        .responsive-main {
+            flex: 1 1 auto;
+            width: 100%;
+            max-width: 100%;
+            padding: 1rem;
+        }
+        @media (min-width: 768px) {
+            .responsive-main {
+                padding: 2rem;
+            }
+        }
+
+        /* البطاقات (الإعدادات واللعبة) */
+        #setup-panel.responsive-card {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            padding: 1.25rem !important;
+        }
+        @media (min-width: 768px) {
+            #setup-panel.responsive-card {
+                padding: 2rem !important;
+            }
+        }
+
+        /* شبكة الإعدادات (الأعمدة) */
+        .mizan-config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+            gap: 0.75rem;
+        }
+        @media (max-width: 480px) {
+            .mizan-config-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* أزرار جانبية تختفي في الجوال */
+        @media (max-width: 640px) {
+            .hide-on-mobile {
+                display: none !important;
+            }
+        }
+
+        /* تحسين السايدبار للجوال */
+        .sidebar {
+            width: 85% !important;
+            max-width: 320px !important;
+        }
+        @media (min-width: 768px) {
+            .sidebar {
+                width: 320px !important;
+            }
+        }
+
+        /* النصوص المرنة */
+        .responsive-text {
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
+            line-height: 1.6;
+        }
+        h1, h2, h3, .heading {
+            text-wrap: balance;
+        }
+
+        /* أي صور أو فيديوهات */
+        img, video, iframe {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        /* الحاوية الداخلية للمحتوى */
+        .container-inner {
+            width: min(100% - 1.5rem, 1200px) !important;
+            margin-inline: auto !important;
+            padding-inline: 0.5rem !important;
+        }
+
+        /* إصلاح مشكلة الأزرار في الجوال */
+        button, .btn {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* منع overflow في أي عنصر */
+        .overflow-guard {
+            overflow: hidden !important;
+            word-break: break-word;
+        }
+    </style>
+
+
+    <style id="mizan-global-country-registration-v2">
+        .mizan-country-picker{position:relative;width:100%;z-index:60}
+        .mizan-country-input-wrap{display:flex;align-items:center;gap:.65rem;min-height:52px;border:1px solid rgba(212,175,55,.30);border-radius:.8rem;background:rgba(7,13,25,.96);padding-inline:.85rem;transition:border-color .2s,box-shadow .2s}
+        .mizan-country-picker:focus-within .mizan-country-input-wrap{border-color:rgba(250,204,21,.8);box-shadow:0 0 0 3px rgba(250,204,21,.08)}
+        .mizan-country-globe{font-size:1.1rem;opacity:.9}
+        .mizan-country-search{width:100%;background:transparent;border:0;outline:0;color:#fde68a;font-weight:700;font-size:.95rem;min-width:0}
+        .mizan-country-search::placeholder{color:#64748b}
+        .mizan-country-clear{border:0;background:transparent;color:#94a3b8;font-size:1.35rem;line-height:1;cursor:pointer;padding:.1rem .2rem}
+        .mizan-country-selected{margin-top:.45rem;padding:.55rem .75rem;border:1px solid rgba(34,197,94,.25);background:rgba(34,197,94,.07);border-radius:.65rem;color:#d1fae5;font-size:.82rem;font-weight:800}
+        .mizan-country-options{position:absolute;inset-inline:0;top:calc(100% + .45rem);max-height:310px;overflow:auto;background:#091221;border:1px solid rgba(212,175,55,.28);border-radius:.9rem;box-shadow:0 24px 60px rgba(0,0,0,.5);padding:.35rem;z-index:100}
+        .mizan-country-option{display:flex;align-items:center;justify-content:space-between;gap:.75rem;width:100%;padding:.7rem .75rem;border:0;background:transparent;color:#e5e7eb;text-align:start;border-radius:.65rem;cursor:pointer}
+        .mizan-country-option:hover,.mizan-country-option[aria-selected="true"]{background:rgba(212,175,55,.12);color:#fde68a}
+        .mizan-country-option-main{display:flex;align-items:center;gap:.65rem;min-width:0}
+        .mizan-country-option-name{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .mizan-country-option-code{font:700 .68rem ui-monospace,SFMono-Regular,Menlo,monospace;color:#94a3b8;direction:ltr}
+        .mizan-country-empty{padding:1.25rem .8rem;text-align:center;color:#94a3b8;font-size:.8rem}
+        [dir="rtl"] .mizan-country-option-code{margin-inline-start:auto}
+    </style>
+
+</head>
+
+<!-- ===== أضفنا كلاس responsive-body ===== -->
+<body class="mizan-app-body responsive-body">
+
+<div class="mizan-organization-watermark" aria-hidden="true"></div>
+
+<!-- =============================================================
+     SIDEBAR OVERLAY
+============================================================== -->
+<div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-40 hidden"></div>
+
+<!-- =============================================================
+     SIDEBAR
+============================================================== -->
+<aside id="sidebar" class="sidebar sidebar-closed-rtl fixed top-0 right-0 h-full w-80
+       bg-[#0d172a] border-l border-yellow-500/20
+       z-50 p-6 flex flex-col justify-between">
+
+    <div class="space-y-6">
+        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+            <div class="flex items-center gap-3">
+                <img src="logo.jpg" alt="ميزان أنزان" class="h-10 w-10 object-contain rounded-full border border-yellow-500/30"
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/40/d4af37/000?text=MIZAN';">
+                <div>
+                    <h2 class="font-bold text-yellow-400 text-sm" data-i18n="brand_title">ميزان أنزان</h2>
+                    <p class="text-[10px] text-gray-400" data-i18n="platform_subtitle">منصة الهيئة الدولية للعلماء التنمية البشرية — فرنسا</p>
+                </div>
+            </div>
+            <button type="button" onclick="toggleSidebar()" class="text-gray-400 hover:text-white" aria-label="إغلاق القائمة">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Student Profile -->
+        <div id="sidebar-profile" class="bg-white/5 p-4 rounded-xl border border-white/10 text-xs space-y-2">
+            <div class="text-gray-400" data-i18n="student_code_label">كود العبقري:</div>
+            <div id="side-student-code" class="font-mono text-base font-black text-yellow-300">-----</div>
+            <div id="side-student-info" class="text-gray-300 font-semibold">-----</div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="space-y-2 text-sm font-bold">
+            <button type="button" onclick="switchView('setup-panel'); toggleSidebar();"
+                    class="w-full text-right ltr:text-left py-3 px-4 rounded-xl hover:bg-yellow-500/10 text-yellow-400 flex items-center gap-3">
+                <i class="fas fa-sliders-h w-5"></i>
+                <span data-i18n="nav_setup">إعدادات التدريب</span>
+            </button>
+            <button type="button" onclick="if (window.DashboardManager && typeof DashboardManager.openLeaderboard === 'function') { DashboardManager.openLeaderboard(); } toggleSidebar();"
+                    class="w-full text-right ltr:text-left py-3 px-4 rounded-xl hover:bg-yellow-500/10 text-yellow-400 flex items-center gap-3">
+                <i class="fas fa-trophy w-5"></i>
+                <span data-i18n="nav_leaderboard">لوحة الصدارة (Top 20)</span>
+            </button>
+            <button type="button" onclick="if (window.DashboardManager && typeof DashboardManager.openMonthlyGeniuses === 'function') { DashboardManager.openMonthlyGeniuses(); } toggleSidebar();"
+                    class="w-full text-right ltr:text-left py-3 px-4 rounded-xl hover:bg-yellow-500/10 text-yellow-300 flex items-center gap-3">
+                <i class="fas fa-crown w-5"></i>
+                <span data-i18n="nav_monthly">عباقرة الشهر</span>
+            </button>
+            <button type="button" onclick="window.location.href='student_history.php';"
+                    class="w-full text-right ltr:text-left py-3 px-4 rounded-xl hover:bg-blue-500/10 text-blue-300 flex items-center gap-3">
+                <i class="fas fa-clock-rotate-left w-5"></i>
+                <span data-i18n="nav_history">سجل التدريب والتقارير</span>
+            </button>
+            <button type="button" onclick="if (window.DashboardManager && typeof DashboardManager.openTrainerPortal === 'function') { DashboardManager.openTrainerPortal(); } toggleSidebar();"
+                    class="w-full text-right ltr:text-left py-3 px-4 rounded-xl hover:bg-purple-500/10 text-purple-400 flex items-center gap-3">
+                <i class="fas fa-user-ninja w-5"></i>
+                <span data-i18n="nav_trainer">لوحة المدرب</span>
+            </button>
+            <button type="button" onclick="if (window.DashboardManager && typeof DashboardManager.openParentPortal === 'function') { DashboardManager.openParentPortal(); } toggleSidebar();"
+                    class="w-full text-right ltr:text-left py-3 px-4 rounded-xl hover:bg-emerald-500/10 text-emerald-400 flex items-center gap-3">
+                <i class="fas fa-user-shield w-5"></i>
+                <span data-i18n="nav_parent">لوحة ولي الأمر</span>
+            </button>
+        </nav>
+    </div>
+
+    <div class="border-t border-white/10 pt-4 flex justify-between items-center text-xs text-gray-400">
+        <span><span data-i18n="version_label">Soroban Core v3.1</span></span>
+        <button type="button" onclick="openRegistrationModal()" class="text-yellow-400 hover:underline font-bold" data-i18n="reset_account">تسجيل / تغيير الحساب</button>
+    </div>
+</aside>
+
+<!-- =============================================================
+     MAIN
+============================================================== -->
+<div id="mizan-page-shell" class="min-h-screen flex flex-col justify-between">
+
+    <!-- ===== HEADER (أضفنا كلاس responsive-header) ===== -->
+    <header id="site-header" class="site-header w-full bg-[#0a1424]/90 border-b border-yellow-500/20 px-4 md:px-8 py-4 flex justify-between items-center z-30 responsive-header">
+
+        <div class="flex items-center gap-4">
+            <button type="button" onclick="toggleSidebar()" class="text-yellow-400 hover:text-yellow-300 text-2xl focus:outline-none" aria-label="فتح القائمة">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="flex items-center gap-3">
+                <img src="logo.jpg" alt="ميزان أنزان" class="h-12 w-12 object-contain rounded-full border border-yellow-500/40"
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/48/d4af37/000?text=MIZAN';">
+                <div>
+                    <h1 id="platform-title" data-i18n="brand_title" class="text-lg md:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-yellow-500 to-amber-200">
+                        ميزان أنزان
+                    </h1>
+                    <p id="platform-subtitle" data-i18n="platform_subtitle" class="text-[11px] md:text-xs text-yellow-400/80 font-semibold">
+                        منصة الهيئة الدولية للعلماء التنمية البشرية — فرنسا
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 md:gap-3">
+            <!-- أزرار جانبية تختفي في الجوال (كلاس hide-on-mobile) -->
+            <button type="button" onclick="if (window.DashboardManager && typeof DashboardManager.openTrainerPortal === 'function') { DashboardManager.openTrainerPortal(); }"
+                    class="hide-on-mobile flex items-center gap-2 bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-300 font-bold px-3 py-1.5 rounded-xl text-xs transition">
+                <i class="fas fa-user-ninja"></i>
+                <span data-i18n="nav_trainer">لوحة المدرب</span>
+            </button>
+            <button type="button" onclick="if (window.DashboardManager && typeof DashboardManager.openParentPortal === 'function') { DashboardManager.openParentPortal(); }"
+                    class="hide-on-mobile flex items-center gap-2 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold px-3 py-1.5 rounded-xl text-xs transition">
+                <i class="fas fa-user-shield"></i>
+                <span data-i18n="nav_parent">لوحة ولي الأمر</span>
+            </button>
+            <div class="mizan-language-picker" dir="ltr">
+                <button type="button" onclick="toggleLanguage()" id="lang-btn" aria-expanded="false" aria-haspopup="true" class="mizan-language-trigger" data-i18n-aria="language_selector_aria">
+                    <i class="fas fa-globe" aria-hidden="true"></i>
+                    <span id="current-lang-label" class="mizan-current-lang-label">🇸🇦 العربية</span>
+                    <i class="fas fa-chevron-down mizan-language-chevron" aria-hidden="true"></i>
+                </button>
+                <div id="language-menu" class="mizan-language-menu" role="menu" aria-label="اختيار اللغة"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN (أضفنا كلاس responsive-main) ===== -->
+    <main id="site-main" class="site-main container mx-auto px-4 py-8 flex-grow flex items-center justify-center responsive-main">
+
+        <!-- =====================================================
+             SETUP PANEL (أضفنا كلاس responsive-card)
+        ====================================================== -->
+        <div id="setup-panel" class="glass-card w-full max-w-4xl p-6 md:p-10 space-y-6 responsive-card">
+
+            <form id="config-form" onsubmit="event.preventDefault(); if (window.GameEngine && typeof GameEngine.initGameSequence === 'function') { GameEngine.initGameSequence(); }" class="space-y-6">
+
+                <!-- Preset -->
+                <div class="bg-yellow-500/10 p-4 rounded-xl border border-yellow-500/30">
+                    <label class="block text-xs font-bold text-yellow-400 mb-2 uppercase tracking-wider" data-i18n="preset_kyu_dan_label">للمدرب - تحديد مستوى التدريب</label>
+                    <select id="standard-preset-select" onchange="applyStandardPreset(this.value)" class="input-field w-full bg-[#0a1424] text-yellow-300 font-bold border border-yellow-500/40 rounded-lg p-3 text-sm">
+                        <option value="custom" data-i18n="preset_custom">-- إعداد يدوي مخصص --</option>
+                        <option value="kyu_beginner" data-i18n="preset_kyu_beginner">المستوى المبتدئ (Kyu 10 - Kyu 7) | 1-2 خانة - 3-5 صفوف</option>
+                        <option value="kyu_inter" data-i18n="preset_kyu_inter">المستوى المتوسط (Kyu 6 - Kyu 4) | 2-3 خانة - 5-8 صفوف</option>
+                        <option value="kyu_advanced" data-i18n="preset_kyu_advanced">المستوى المتقدم (Kyu 3 - Kyu 1) | 3-5 خانات - 8-12 صف</option>
+                        <option value="dan_pro" data-i18n="preset_dan_pro">المستوى الإحترافي (Dan 1 - Dan 5) | 5-8 خانات - 15-25 صف</option>
+                        <option value="dan_master" data-i18n="preset_dan_master">مستوى الماستر (Dan 6 - Dan 10) | 8-10 خانات - 30-50 صف</option>
+                        <option value="olympiad_gm" data-i18n="preset_olympiad_gm">مستوى الأولمبياد العالمي (Grandmaster) | 10-15 خانة - 50-100 صف</option>
+                    </select>
+                </div>
+
+                <!-- Training mode -->
+                <div>
+                    <label class="block text-xs font-bold text-yellow-400 mb-2 uppercase tracking-wider" data-i18n="mode_label">نمط التدريب</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label class="cursor-pointer flex items-center justify-between p-4 rounded-xl border border-yellow-500/30 bg-white/5 hover:bg-yellow-500/10 transition">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="training_mode" value="flash" checked class="accent-yellow-500">
+                                <div>
+                                    <div class="font-bold text-yellow-300 text-sm" data-i18n="mode_flash">أنزان ومضي فلاش</div>
+                                    <div class="text-[11px] text-gray-400" data-i18n="mode_flash_desc">ظهور الأرقام بالتتابع السريع</div>
+                                </div>
+                            </div>
+                            <i class="fas fa-bolt text-yellow-400 text-lg"></i>
+                        </label>
+                        <label class="cursor-pointer flex items-center justify-between p-4 rounded-xl border border-yellow-500/30 bg-white/5 hover:bg-yellow-500/10 transition">
+                            <div class="flex items-center gap-3">
+                                <input type="radio" name="training_mode" value="standard" class="accent-yellow-500">
+                                <div>
+                                    <div class="font-bold text-yellow-300 text-sm" data-i18n="mode_standard">سوروبان عادي (ثابت)</div>
+                                    <div class="text-[11px] text-gray-400" data-i18n="mode_standard_desc">أرقام كاملة ثابتة</div>
+                                </div>
+                            </div>
+                            <i class="fas fa-list-ol text-yellow-400 text-lg"></i>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Level + Age -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-yellow-400 mb-1" data-i18n="level_label">المستوى (قواعد السوروبان الصارمة)</label>
+                        <select id="level-type" class="input-field w-full bg-[#0a1424] text-yellow-300 font-bold border border-yellow-500/30 rounded-lg p-2.5">
+                            <option value="L1" data-i18n="level_l1">L1 - جمع وطرح مباشر (بدون مكملات)</option>
+                            <option value="L2" data-i18n="level_l2">L2 - مكملات 5 (أصدقاء 5)</option>
+                            <option value="L3" data-i18n="level_l3">L3 - مكملات 10 (أصدقاء 10)</option>
+                            <option value="LM" data-i18n="level_lm">LM - خليط شامل (جميع المكملات)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-yellow-400 mb-1" data-i18n="age_label">الفئة العمرية</label>
+                        <select id="age-group" class="input-field w-full bg-[#0a1424] text-yellow-300 border border-yellow-500/30 rounded-lg p-2.5">
+                            <option value="under_6" data-i18n="age_under_6">أقل من 6 سنوات</option>
+                            <option value="7_9" selected data-i18n="age_7_9">7 - 9 سنوات</option>
+                            <option value="10_12" data-i18n="age_10_12">10 - 12 سنة</option>
+                            <option value="13_15" data-i18n="age_13_15">13 - 15 سنة</option>
+                            <option value="16_plus" data-i18n="age_16_plus">16 سنة فما فوق</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Main numeric configuration (استخدمنا grid المخصص) -->
+                <div class="mizan-config-grid">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-1" data-i18n="digits_label">عدد الخانات</label>
+                        <input type="number" id="digits" min="1" max="15" value="2" class="input-field w-full bg-[#0a1424] text-yellow-300 border border-yellow-500/30 rounded-lg p-2.5 font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-1" data-i18n="rows_label">عدد الصفوف</label>
+                        <input type="number" id="rows" min="2" max="100" value="4" class="input-field w-full bg-[#0a1424] text-yellow-300 border border-yellow-500/30 rounded-lg p-2.5 font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-1" data-i18n="op_label">نوع العملية</label>
+                        <select id="operation-type" class="input-field w-full bg-[#0a1424] text-yellow-300 border border-yellow-500/30 rounded-lg p-2.5">
+                            <option value="addition" data-i18n="op_add">جمع فقط</option>
+                            <option value="subtraction" data-i18n="op_sub">طرح فقط</option>
+                            <option value="mixed" selected data-i18n="op_mix">شامل (جمع وطرح)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-1" data-i18n="duration_label">مدة التحدي (ثانية)</label>
+                        <input type="number" id="challenge-time" min="10" max="300" value="60" class="input-field w-full bg-[#0a1424] text-yellow-300 border border-yellow-500/30 rounded-lg p-2.5 font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-1" data-i18n="rest_label">زمن الراحة</label>
+                        <select id="rest-time" class="input-field w-full bg-[#0a1424] text-yellow-300 border border-yellow-500/30 rounded-lg p-2.5">
+                            <option value="1" data-i18n="rest_1s">1 ثانية</option>
+                            <option value="2" selected data-i18n="rest_2s">2 ثانية</option>
+                            <option value="3" data-i18n="rest_3s">3 ثواني</option>
+                            <option value="4" data-i18n="rest_4s">4 ثواني</option>
+                            <option value="5" data-i18n="rest_5s">5 ثواني</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Speed -->
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="text-xs font-bold text-gray-300" data-i18n="speed_label">سرعة ظهور الأرقام (بالثواني)</label>
+                        <span id="speed-value" class="text-xs font-black text-yellow-400 font-mono">0.80 sec</span>
+                    </div>
+                    <input type="range" id="speed" min="0.05" max="3.0" step="0.05" value="0.80" oninput="updateSpeedDisplay(this.value)" class="w-full accent-yellow-500 bg-gray-700 h-2 rounded-lg cursor-pointer">
+                </div>
+
+                <!-- Options -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-white/5 p-4 rounded-xl border border-white/10 text-xs">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" id="enable-tts" class="accent-yellow-500">
+                        <span data-i18n="tts_label">نطق الأرقام</span>
+                    </label>
+                </div>
+
+                <!-- Start -->
+                <button type="submit" class="btn-gold bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-black font-black w-full py-4 rounded-xl text-lg flex items-center justify-center gap-2 transition shadow-lg">
+                    <i class="fas fa-play"></i>
+                    <span data-i18n="start_button">بـدء التـحـدي</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- =====================================================
+             GAME PANEL (أضفنا كلاس responsive-card)
+        ====================================================== -->
+        <div id="game-panel" class="hidden glass-card w-full max-w-3xl p-6 md:p-8 text-center space-y-6">
+            <div class="bg-black/40 p-4 rounded-xl border border-yellow-500/20 space-y-3">
+                <div class="flex justify-between items-center gap-3 text-sm" id="challenge-timer-wrap">
+                    <div class="min-w-0">
+                        <i class="fas fa-stopwatch text-yellow-400 ml-1"></i>
+                        <span data-i18n="timer_label">الزمن المتبقي:</span>
+                        <span id="game-timer" class="font-mono font-bold text-yellow-300 text-lg tabular-nums transition-colors duration-300" aria-live="polite" aria-valuemin="0" aria-valuemax="60" aria-valuenow="60">60</span>
+                        s
+                    </div>
+                    <div>
+                        <i class="fas fa-star text-yellow-400 ml-1"></i>
+                        <span data-i18n="score_label">النقاط:</span>
+                        <span id="game-score" class="font-mono font-bold text-green-400 text-lg">0</span>
+                    </div>
+                    <button type="button" onclick="if (window.GameEngine && typeof GameEngine.stop === 'function') { GameEngine.stop(); }" class="bg-red-500/20 hover:bg-red-500/40 text-red-300 text-xs px-3 py-1.5 rounded-lg border border-red-500/30 transition">
+                        <span data-i18n="exit_button">إنهاء</span>
+                    </button>
+                </div>
+                <div class="w-full h-2.5 rounded-full bg-slate-800/90 overflow-hidden border border-white/10" role="progressbar" aria-label="Challenge time remaining" aria-valuemin="0" aria-valuemax="60" aria-valuenow="60">
+                    <div id="challenge-time-bar" class="h-full rounded-full" style="width:100%;background:linear-gradient(90deg,#f4d35e,#d4af37);box-shadow:0 0 12px rgba(212,175,55,.22);transition:width 1s linear,background .3s ease,box-shadow .3s ease;"></div>
+                </div>
+            </div>
+
+            <div id="flash-display-wrapper" class="relative min-h-[220px] flex items-center justify-center">
+                <div id="flash-display" class="number-display text-6xl md:text-8xl font-black text-yellow-400 font-mono">--</div>
+                <div id="soroban-display" class="hidden w-full transition-all duration-300"></div>
+            </div>
+
+            <div id="answer-box" class="hidden space-y-4">
+                <input type="text" id="user-answer" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="اكتب الناتج هنا" autofocus class="w-full text-center text-4xl font-black py-4 rounded-xl bg-black/60 border-2 border-yellow-500/50 text-yellow-300 focus:border-yellow-400 outline-none">
+                <button type="button" onclick="if (window.GameEngine && typeof GameEngine.submitAnswer === 'function') { GameEngine.submitAnswer(); }" class="btn-gold bg-yellow-500 text-black w-full py-4 rounded-xl font-black text-xl hover:bg-yellow-400 transition">
+                    <span data-i18n="submit_answer">إرسال الإجابة</span>
+                </button>
+            </div>
+
+            <div id="result-feedback" class="hidden text-center p-4 rounded-xl font-bold text-lg"></div>
+        </div>
+
+    </main>
+</div>
+
+<!-- =============================================================
+     REGISTRATION MODAL
+============================================================== -->
+<div id="onboarding-modal" class="modal-backdrop fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center hidden">
+    <div class="glass-card w-full max-w-lg p-6 md:p-8 space-y-6 relative m-4 border-2 border-yellow-500/50 text-center bg-[#0a1424] rounded-2xl shadow-2xl">
+        <button type="button" onclick="document.getElementById('onboarding-modal').classList.add('hidden')" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl" aria-label="إغلاق">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <div class="w-20 h-20 mx-auto rounded-full border-2 border-yellow-500/40 flex items-center justify-center bg-yellow-500/5">
+            <img src="logo.jpg" alt="MIZAN" class="h-16 w-16 object-contain rounded-full">
+        </div>
+
+        <!-- Language selector is intentionally visible inside the first-entry modal.
+             The header selector remains available after the modal is closed. -->
+        <div id="registration-language-picker" class="mizan-language-picker" dir="ltr">
+            <button type="button" onclick="toggleLanguage('registration-language-menu')" id="registration-lang-btn" aria-expanded="false" aria-haspopup="true" class="mizan-language-trigger" data-i18n-aria="language_selector_aria">
+                <span class="mizan-language-main"><i class="fas fa-globe" aria-hidden="true"></i><span class="mizan-current-lang-label">🇸🇦 العربية</span></span>
+                <i class="fas fa-chevron-down mizan-language-chevron" aria-hidden="true"></i>
+            </button>
+            <div id="registration-language-menu" class="mizan-language-menu" role="menu" aria-label="اختيار اللغة"></div>
+        </div>
+
+        <div>
+            <h2 class="text-2xl font-black text-yellow-400" data-i18n="registration_title">مرحبًا بك في ميزان أنزان</h2>
+            <p class="text-xs text-gray-300 mt-2" data-i18n="registration_desc">
+                اختر نوع الحساب المناسب لك. لكل فئة هوية وصلاحيات آمنة.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-right ltr:text-left">
+            <button type="button" onclick="setRegistrationRole('genius')" class="registration-role-btn bg-yellow-500/10 border border-yellow-500/30 text-yellow-200 rounded-xl p-3 font-bold text-sm">
+                🧠 <span data-i18n="role_genius">عبقري</span>
+            </button>
+            <button type="button" onclick="setRegistrationRole('coach')" class="registration-role-btn bg-purple-500/10 border border-purple-500/30 text-purple-200 rounded-xl p-3 font-bold text-sm">
+                👨‍🏫 <span data-i18n="role_coach">مدرب</span>
+            </button>
+            <button type="button" onclick="setRegistrationRole('parent')" class="registration-role-btn bg-emerald-500/10 border border-emerald-500/30 text-emerald-200 rounded-xl p-3 font-bold text-sm">
+                👨‍👩‍👦 <span data-i18n="role_parent">ولي الأمر</span>
+            </button>
+            <button type="button" onclick="setRegistrationRole('entity')" class="registration-role-btn bg-blue-500/10 border border-blue-500/30 text-blue-200 rounded-xl p-3 font-bold text-sm">
+                🏛️ <span data-i18n="role_entity">مؤسسة</span>
+            </button>
+        </div>
+
+        <form id="registration-form" onsubmit="event.preventDefault(); handleRegistrationSubmit();" class="space-y-4 text-right ltr:text-left">
+            <input type="hidden" id="registration-role" value="genius">
+
+            <div id="person-name-wrap">
+                <label id="person-name-label" class="block text-xs font-bold text-yellow-400/90 mb-1" data-i18n="fullname_label">الاسم الكامل للعبقري/ـة</label>
+                <input type="text" id="reg-fullname" required maxlength="180" autocomplete="name"
+                       placeholder="Enter your full name" data-i18n-ph="fullname_ph"
+                       class="input-field w-full bg-[#070d19] text-yellow-300 border border-yellow-500/30 rounded-lg p-3 font-semibold">
+            </div>
+
+            <div id="entity-name-wrap" class="hidden">
+                <label class="block text-xs font-bold text-blue-300 mb-1" data-i18n="entity_name_label">اسم المؤسسة</label>
+                <input type="text" id="reg-entity-name" maxlength="200" autocomplete="organization"
+                       placeholder="أدخل اسم المؤسسة الرسمي" data-i18n-ph="entity_name_placeholder"
+                       class="input-field w-full bg-[#070d19] text-blue-200 border border-blue-500/30 rounded-lg p-3 font-semibold">
+            </div>
+
+            <div id="entity-contact-wrap" class="hidden">
+                <label id="entity-contact-label" class="block text-xs font-bold text-blue-300 mb-1">اسم المدير / المفوض / المسؤول التنفيذي</label>
+                <input type="text" id="reg-entity-contact" maxlength="180" autocomplete="name"
+                       placeholder="اسم المدير أو المفوض أو المسؤول التنفيذي"
+                       class="input-field w-full bg-[#070d19] text-blue-200 border border-blue-500/30 rounded-lg p-3 font-semibold">
+            </div>
+
+            <div id="coach-registration-mode-wrap" class="hidden">
+                <label class="block text-xs font-bold text-purple-300 mb-2">طريقة تسجيل المدرب</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <button type="button" id="coach-mode-independent" onclick="setCoachRegistrationMode('independent')"
+                            class="coach-mode-btn border border-purple-500/40 bg-purple-500/10 text-purple-100 rounded-xl p-3 font-bold text-sm">
+                        👤 مدرب مستقل
+                    </button>
+                    <button type="button" id="coach-mode-institution" onclick="setCoachRegistrationMode('institution')"
+                            class="coach-mode-btn border border-blue-500/40 bg-blue-500/10 text-blue-100 rounded-xl p-3 font-bold text-sm">
+                        🏛️ عضو في مؤسسة
+                    </button>
+                </div>
+            </div>
+
+            <div id="coach-institution-wrap" class="hidden">
+                <label class="block text-xs font-bold text-blue-300 mb-1">كود المؤسسة</label>
+                <input type="text" id="reg-institution-code" maxlength="40" autocomplete="off"
+                       placeholder="أدخل كود المؤسسة الذي حصلت عليه"
+                       class="input-field w-full bg-[#070d19] text-blue-200 border border-blue-500/30 rounded-lg p-3 font-semibold uppercase">
+                <p class="mt-1 text-[11px] text-gray-500">استخدم كود المؤسسة الرسمي للانضمام إليها كمدرب.</p>
+            </div>
+
+            <div id="entity-type-wrap" class="hidden">
+                <label class="block text-xs font-bold text-blue-300 mb-1" data-i18n="entity_type_label">نوع المؤسسة</label>
+                <select id="reg-entity-type" class="input-field w-full bg-[#070d19] text-blue-200 border border-blue-500/30 rounded-lg p-3 font-semibold">
+                    <option value="school" data-i18n="entity_type_school">مدرسة</option>
+                    <option value="academy" data-i18n="entity_type_academy">أكاديمية</option>
+                    <option value="center" data-i18n="entity_type_center">مركز تدريب</option>
+                    <option value="institute" data-i18n="entity_type_institute">معهد</option>
+                    <option value="club" data-i18n="entity_type_club">نادٍ</option>
+                    <option value="federation" data-i18n="entity_type_federation">اتحاد</option>
+                    <option value="organization" data-i18n="entity_type_training_organization">منظمة تدريبية</option>
+                </select>
+            </div>
+
+            <div>
+                <label id="display-name-en-label" class="block text-xs font-bold text-yellow-400/90 mb-1" data-i18n="display_name_en_label">الاسم الدولي باللغة الإنجليزية</label>
+                <input type="text" id="reg-display-name-en" maxlength="180"
+                       placeholder="الاسم الدولي باللغة الإنجليزية (اختياري)"
+                       data-i18n-ph="display_name_en_placeholder"
+                       class="input-field w-full bg-[#070d19] text-yellow-300 border border-yellow-500/30 rounded-lg p-3 font-semibold">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-yellow-400/90 mb-1" data-i18n="country_label">الدولة</label>
+                <div id="mizan-country-picker" class="mizan-country-picker" data-country-picker>
+                    <input type="hidden" id="reg-country" value="">
+                    <div class="mizan-country-input-wrap">
+                        <span class="mizan-country-globe" aria-hidden="true">🌍</span>
+                        <input type="text" id="reg-country-search" autocomplete="off" inputmode="search"
+                               role="combobox" aria-expanded="false" aria-controls="mizan-country-options"
+                               placeholder="ابحث عن دولتك" data-i18n-ph="country_search_placeholder"
+                               class="mizan-country-search">
+                        <button type="button" id="mizan-country-clear" class="mizan-country-clear hidden" aria-label="مسح الدولة">×</button>
+                    </div>
+                    <div id="mizan-country-selected" class="mizan-country-selected hidden" aria-live="polite"></div>
+                    <div id="mizan-country-options" class="mizan-country-options hidden" role="listbox"></div>
+                </div>
+                <p class="mt-1 text-[11px] text-gray-500" data-i18n="country_help">ابحث بلغتك أو بالإنجليزية ثم اختر هوية الدولة الرسمية.</p>
+            </div>
+
+            <div id="registration-note" class="text-xs text-gray-400 bg-white/5 rounded-xl p-3 text-center" data-i18n="independent_coach_note">
+                Coaches can register independently without belonging to an entity.
+            </div>
+
+            <button id="registration-submit" type="submit"
+                    class="btn-gold bg-gradient-to-r from-yellow-500 to-amber-500 text-black w-full py-3.5 rounded-xl font-black text-base mt-2 hover:brightness-110 transition shadow-lg">
+                <span data-i18n="generate_code_btn">إنشاء كود العبقري والدخول</span>
+            </button>
+        </form>
+
+        <div id="registration-result" class="hidden"></div>
+    </div>
+</div>
+
+<!-- =============================================================
+     DASHBOARD MODAL
+============================================================== -->
+<div id="modal-container" class="modal-backdrop fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+    <div class="glass-card w-full max-w-5xl max-h-[90vh] overflow-y-auto p-6 md:p-8 relative m-4 border border-yellow-500/30 bg-[#0d172a] rounded-2xl">
+        <button type="button" onclick="if (window.DashboardManager && typeof DashboardManager.closeModal === 'function') { DashboardManager.closeModal(); }" class="absolute top-4 left-4 text-gray-400 hover:text-white text-xl" aria-label="إغلاق">
+            <i class="fas fa-times"></i>
+        </button>
+        <div id="modal-content"></div>
+    </div>
+</div>
+
+<!-- =============================================================
+     JAVASCRIPT — PRODUCTION LOAD CONTRACT
+============================================================== -->
+<script src="/mizan_anzan/assets/js/i18n.js?v=20260820-global-final-r1" defer></script>
+<script src="/mizan_anzan/assets/js/country_identity.js?v=20260820-global-final-r1" defer></script>
+<script src="/mizan_anzan/assets/js/anzan_soroban_engine_v3.js?v=20260824-engine-3-1-0-r1"></script>
+<script src="/mizan_anzan/assets/js/app.js?v=20260820-global-final-r1" defer></script>
+
+<!-- Boot Diagnostics -->
+<!-- Boot Diagnostics -->
+<script>
+    window.addEventListener('load', function () {
+        const diagnostics = {
+            MizanAnzanSoroban: typeof window.MizanAnzanSoroban,
+            EngineVersion: window.MizanAnzanSoroban?.VERSION || 'unavailable',
+            GameEngine: typeof window.GameEngine,
+            DashboardManager: typeof window.DashboardManager,
+            I18n: typeof window.I18n,
+            toggleSidebar: typeof window.toggleSidebar
+        };
+
+        console.group(
+            '%cMIZAN ANZAN%c — Application Boot Diagnostics',
+            'background:#d4af37;color:#000;padding:4px 8px;font-weight:900',
+            'color:#d4af37;font-weight:900'
+        );
+
+        console.table(diagnostics);
+        console.groupEnd();
+    });
+</script>
+</body>
+</html>

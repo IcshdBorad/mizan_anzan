@@ -1,0 +1,12 @@
+<?php
+/*
+ * Copy this file to: includes/db-config.php
+ * Then replace ONLY the password with the current MySQL password from hPanel.
+ * Never commit or publicly share db-config.php.
+ */
+return [
+    'MIZAN_DB_HOST' => 'localhost',
+    'MIZAN_DB_NAME' => 'u354720897_5EoZT',
+    'MIZAN_DB_USER' => 'u354720897_FrwC8',
+    'MIZAN_DB_PASSWORD' => 'PUT_THE_NEW_DATABASE_PASSWORD_HERE',
+];

@@ -1,0 +1,53 @@
+MIZAN ANZAN — PRODUCTION MAP
+============================
+
+ACTIVE MAIN PAGE
+-----------------
+index.html
+
+Production CSS
+--------------
+assets/css/style.css
+
+Production JavaScript load order
+--------------------------------
+1. assets/js/i18n.js
+2. assets/js/anzan_soroban_engine_v3.js
+3. assets/js/app.js
+
+Data APIs
+---------
+- api/register-student.php
+- api/restore-session.php
+- api/save-result.php
+- api/leaderboard.php
+
+Student/report flow
+-------------------
+Registration -> anzan_profiles -> PHP session -> challenge -> anzan_results
+-> student_history.php -> generate_report.php?id=...
+
+Leaderboard flow
+----------------
+anzan_results + anzan_profiles -> api/leaderboard.php -> app.js -> Top 20 UI
+
+Legacy files
+------------
+The following remain outside the production boot chain:
+- assets/js/app_mizan_anzan_v3.1.js
+- assets/js/mizan_anzan_engine_v3.1.js
+- assets/js/anzan_soroban_engine_v1.js
+- assets/js/anzan_soroban_engine_v2.js
+- assets/js/mizan-anzan-engine.js
+- assets/js/mizan_anzan_integration_v3.1.js
+- assets/js/SorobanBeadEngine.js
+- assets/js/SorobanTransitionValidator.js
+
+They must not be added to index.html.
+
+UI rules
+--------
+- Negative cumulative states/results are disabled.
+- No negative-results checkbox exists in the training UI.
+- No red negative-result indicator is part of production UI.
+- Arabic, English and French are supported.
